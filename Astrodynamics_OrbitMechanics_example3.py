@@ -27,17 +27,11 @@ for i in range (0,N):
     if x[i] == 0:
         ax[i]=0
     else:    
-        if x[i] < 0:
-            ax[i] = a(x[i],y[i])/math.sqrt(1+(y[i]**2/x[i]**2))*-1.0
-        else:
-            ax[i] = a(x[i],y[i])/math.sqrt(1+(y[i]**2/x[i]**2))
+        ax[i] = a(x[i],y[i])/math.sqrt(1+(y[i]**2/x[i]**2))*(x[i]/abs(x[i]))
     if y[i] == 0:
         ay[i]=0
     else:
-        if y[i] < 0:
-            ay[i] = a(x[i],y[i])/math.sqrt(1+(x[i]**2/y[i]**2))*-1.0
-        else:
-            ay[i] = a(x[i],y[i])/math.sqrt(1+(x[i]**2/y[i]**2))
+        ay[i] = a(x[i],y[i])/math.sqrt(1+(x[i]**2/y[i]**2))*(y[i]/abs(y[i]))
     vx[i+1] = vx[i] + ax[i]*dt
     vy[i+1] = vy[i] + ay[i]*dt
     x[i+1] = x[i] + vx[i]*dt 
