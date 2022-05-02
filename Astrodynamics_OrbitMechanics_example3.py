@@ -12,29 +12,38 @@ y[0] = 0.0 # (m) initial condition of object position on y-axis
 vx = np.zeros(N+1)
 vy = np.zeros(N+1)
 vx[0] = 0.0 # (m/s) initial condition of object velocity in x-axis direction
-vy[0] = 29000 # (m/s) initial condition of object velocity in y-axis direction
+vy[0] = 29780 # (m/s) initial condition of object velocity in y-axis direction
 ax = np.zeros(N+1)
 ay = np.zeros(N+1)
 m1 = 1.988e30 # (kg) mass of central body (mass of the sun is 1.988e30 kg)
 G = 6.67e-11 # (Nm^2kg^-2) gravitational constant
 
 def a(x,y):
-    r=math.sqrt(x**2+y**2)
+    r=math.sqrt(x**2+y**2) # Distance from the central body to the object
     return (-G*m1)/r**2 # Acceleration of a body under a gravity force from a mass m1
 
 for i in range (0,N):
-    r = x[i],y[i]
     if x[i] == 0:
-        ax[i]=0
+        ax[i]=0 # To prevent an impossible operations in the calculation of ax[i]
     else:    
-        ax[i] = a(x[i],y[i])/math.sqrt(1+(y[i]**2/x[i]**2))*(x[i]/abs(x[i]))
+        ax[i] = a(x[i],y[i])/math.sqrt(1+(y[i]**2/x[i]**2))*(x[i]/abs(x[i])) # Calculation of the accelleration ax[i]. Note that the sign/direction of ax[i] is arranged with the factor: (x[i]/abs(x[i]))
     if y[i] == 0:
-        ay[i]=0
+        ay[i]=0 # To prevent an impossible operation in the calculation of ay[i]
     else:
-        ay[i] = a(x[i],y[i])/math.sqrt(1+(x[i]**2/y[i]**2))*(y[i]/abs(y[i]))
-    vx[i+1] = vx[i] + ax[i]*dt
-    vy[i+1] = vy[i] + ay[i]*dt
-    x[i+1] = x[i] + vx[i]*dt 
-    y[i+1] = y[i] + vy[i]*dt    
-plt.plot(x,y)
-plt.show()
+        ay[i] = a(x[i],y[i])/math.sqrt(1+(x[i]**2/y[i]**2))*(y[i]/abs(y[i])) # Calculation of the accelleration ay[i]. Note that the sign/direction of ay[i] is arranged with the factor: (y[i]/abs(y[i]))
+    vx[i+1] = vx[i] + ax[i]*dt # calculation of the velocity as a result of the initial velocity and the acceleration
+    vy[i+1] = vy[i] + ay[i]*dt # calculation of the velocity as a result of the initial velocity and the acceleration
+    x[i+1] = x[i] + vx[i]*dt # calculation of the position as a result of the initial position and the velocity
+    y[i+1] = y[i] + vy[i]*dt # calculation of the position as a result of the initial position and the velocity   
+
+plotlabel='Object position'
+fig=plt.figure()    
+ax=fig.add_subplot(111)
+ax.set_aspect('equal')
+fig.suptitle('Orbit propagation of object')
+plt.scatter(x,y,label=plotlabel)
+plt.legend(loc='upper left',fontsize='small')
+plt.xlabel('X axis (m)')
+plt.ylabel('Y axis (m)')
+
+#plt.savefig('test.png')
