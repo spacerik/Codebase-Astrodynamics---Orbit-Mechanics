@@ -1,5 +1,4 @@
 # Code based on this post on https://stackoverflow.com/questions/29060824/is-there-a-way-to-define-a-float-array-in-python
-# leuk gedaan
 import numpy as np
 import matplotlib.pyplot as plt
 import math
