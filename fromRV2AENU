@@ -1,0 +1,36 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Sun Sep 24 10:10:52 2023
+
+@author: eriklaan
+"""
+
+import numpy as np
+import math
+
+# Define the position vector (r) and velocity vector (v) of the satellite
+# These vectors should be given in three dimensions (x, y, z)
+
+# Values are in meters and meters per second
+radius_Earth=6371.0E3 # m 
+altitude_ISS=408.0E3 # m
+velocity=7600.0 # m/s (tangential velocity)
+
+r = np.array([radius_Earth+altitude_ISS, 0, 0])  # Position vector (satellite altitude above Earth's surface)
+v = np.array([0,velocity, 0])    # Velocity vector
+
+# Constants
+gravitational_constant = 6.67430e-11  # m^3/kg/s^2 (Gravitational constant)
+mass_earth = 5.972E24  # kg (Mass of the Earth)
+mass_sun= 1.989E30 # kg (Mass of the Sun)
+mu=gravitational_constant*mass_earth
+
+# Calculate the eccentricity (e), semi-major axis (a) & true anomaly (nu)
+e=np.linalg.norm(np.cross(v,np.cross(r,v))/mu-r/np.linalg.norm(r))
+a=(-1.0*mu/(0.5*np.linalg.norm(v)**2-mu/np.linalg.norm(r)))/2
+nu=np.arccos((a*(1-e**2)/np.linalg.norm(r)-1)/e)*180.0/math.pi
+
+# Print the eccentricity
+print("Eccentricity (e):", e)
+print("Semi major axis (a):",a)
+print("True anomaly (nu):",nu)
